@@ -51,7 +51,7 @@ def pantalla_inicial():
                     else:
                         mensaje_error = "¡El usuario debe ser ingresado!"  
                 elif boton_rect_ranking.collidepoint(x, y):  #
-                    pantalla_ranking()
+                    mostrar_ranking()
 
             elif event.type == pygame.KEYDOWN:  
                 if event.key == pygame.K_BACKSPACE:  
@@ -93,18 +93,18 @@ def mostrar_ranking():
     """Muestra el ranking de puntajes de mayor a menor."""
     ranking = cargar_ranking()  
     
-    fuente = pygame.font.Font(None, 36)
+    fuente = pygame.font.Font(None, 28) 
     pantalla.fill(COLORES["ROSA"])  
 
-    texto_ranking = fuente.render("Ranking de Puntajes", True, COLORES["BLANCO"])
+    texto_ranking = fuente.render("Ranking", True, COLORES["BLANCO"])
     texto_rect = texto_ranking.get_rect(center=(ANCHO // 2, ALTO // 6))
     pantalla.blit(texto_ranking, texto_rect)
 
     y_offset = ALTO // 4
     for i, (nombre, puntaje) in enumerate(ranking):
-        texto = fuente.render(f"{i + 1}. {nombre} - {puntaje} puntos", True, COLORES["BLANCO"])
+        texto = fuente.render(f"{i + 1}. {nombre} - {puntaje} puntos", True, COLORES["NEGRO"])
         pantalla.blit(texto, (ANCHO // 4, y_offset))
-        y_offset += 40
+        y_offset += 30  
 
     boton_rect = pygame.Rect(ANCHO // 3, ALTO - 100, ANCHO // 3, 50)
     pygame.draw.rect(pantalla, COLORES["AZUL"], boton_rect)
@@ -122,7 +122,8 @@ def mostrar_ranking():
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x, y = event.pos
                 if boton_rect.collidepoint(x, y):
-                    return  
+                    return
+
                 
 def cargar_ranking():
     """Carga el ranking desde el archivo JSON y lo ordena usando el algoritmo Bubble Sort
@@ -138,45 +139,6 @@ def cargar_ranking():
                 ranking_lista[j], ranking_lista[j+1] = ranking_lista[j+1], ranking_lista[j]
     return ranking_lista
 
-def pantalla_ranking():
-    """
-    Muestra el ranking de puntajes ordenado de mayor a menor.
-    """
-    pantalla.fill(COLORES["ROSA"])
-
-    fuente_titulo = pygame.font.Font(None, 48)  
-    texto_titulo = fuente_titulo.render("Ranking", True, COLORES["NEGRO"])
-    pantalla.blit(texto_titulo, (ANCHO // 2 - texto_titulo.get_width() // 2, 50))
-
-    ranking = cargar_ranking()
-    ranking_ordenado = sorted(ranking, key=lambda x: x[1], reverse=True)
-
-    fuente_ranking = pygame.font.Font(None, 28)  
-    y_offset = 120  
-    espacio_entre_filas = 25  
-
-    for i, (nombre, puntaje) in enumerate(ranking_ordenado):
-        texto_ranking = fuente_ranking.render(f"{i + 1}. {nombre}: {puntaje}", True, COLORES["GRIS"])
-        pantalla.blit(texto_ranking, (ANCHO // 2 - texto_ranking.get_width() // 2, y_offset))
-        y_offset += espacio_entre_filas  
-
-    boton_rect = pygame.Rect(ANCHO // 3, ALTO - 100, ANCHO // 3, 50)
-    pygame.draw.rect(pantalla, COLORES["AZUL"], boton_rect)
-    texto_boton = fuente_ranking.render("Volver", True, COLORES["BLANCO"])
-    boton_texto_rect = texto_boton.get_rect(center=boton_rect.center)
-    pantalla.blit(texto_boton, boton_texto_rect)
-
-    pygame.display.update()
-
-    while True:
-        for event in pygame.event.get():
-            if event.type == pygame.QUIT:
-                pygame.quit()
-                sys.exit()
-            elif event.type == pygame.MOUSEBUTTONDOWN:
-                x, y = event.pos
-                if boton_rect.collidepoint(x, y):  
-                    return  
 
 def pantalla_final(mensaje, puntuacion):
     """Muestra la pantalla final con el mensaje y la puntuación final.
