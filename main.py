@@ -28,7 +28,7 @@ def main():
     desplazamiento_lineas = 0
 
     filas = 10  
-    columnas = 5
+    columnas = 10
     mapa = generar_mapa_carretera(filas, columnas)
     mostrar_mapa(mapa) 
 
@@ -58,7 +58,6 @@ def main():
         for obstaculo in obstaculos:
             pantalla.blit(imagen_obstaculo, (obstaculo.x, obstaculo.y))
             obstaculo.y += velocidad_obstaculos
-
             if obstaculo.top > ALTO:
                 obstaculo.y = -100
                 obstaculo.x = random.randint(ANCHO // 4, 3 * ANCHO // 4 - 50)
